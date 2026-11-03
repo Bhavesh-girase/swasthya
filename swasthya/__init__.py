@@ -1,0 +1,1 @@
+"""Swasthya-Vaani demo application."""
