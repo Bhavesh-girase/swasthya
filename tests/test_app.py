@@ -1,3 +1,4 @@
+import base64
 import os
 import unittest
 from types import SimpleNamespace
@@ -83,6 +84,30 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["reply"], "धन्यवाद।")
         self.assertTrue(response.json()["preview_only"])
+        self.assertEqual(completion.call_args.kwargs["model"], "sarvam-105b-conversations")
+
+    def test_voice_demo_runs_all_sarvam_steps_with_fixtures_only(self):
+        self.sign_in()
+        fake_audio = base64.b64encode(b"synthetic wav bytes").decode("ascii")
+        tts = Mock(side_effect=[SimpleNamespace(audios=[fake_audio]), SimpleNamespace(audios=[fake_audio])])
+        stt = Mock(return_value=SimpleNamespace(transcript="कल मेरी दवा छूट गई थी।"))
+        completion = Mock(
+            return_value=SimpleNamespace(
+                choices=[SimpleNamespace(message=SimpleNamespace(content="धन्यवाद। दवा में बदलाव न करें।"))]
+            )
+        )
+        fake_client = SimpleNamespace(
+            text_to_speech=SimpleNamespace(convert=tts),
+            speech_to_text=SimpleNamespace(transcribe=stt),
+            chat=SimpleNamespace(completions=completion),
+        )
+        with patch("swasthya.main._create_sarvam_client", return_value=fake_client):
+            response = self.client.post("/api/demo/voice-loop")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["stt_model"], "Saaras v4")
+        self.assertTrue(response.json()["preview_only"])
+        self.assertEqual(tts.call_count, 2)
+        self.assertEqual(stt.call_args.kwargs["model"], "saaras:v4")
         self.assertEqual(completion.call_args.kwargs["model"], "sarvam-105b-conversations")
 
 

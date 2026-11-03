@@ -84,7 +84,7 @@ COORDINATOR_PHONE= # provision via a deployment secret after consent and escalat
 
 ### Phase 1 delivered in this project
 
-- A local, password-protected dashboard with clearly synthetic cases and a Sarvam 105B Conversations language preview.
+- A local, password-protected dashboard with clearly synthetic cases and a Hindi voice loop: Bulbul v4 Flash → Saaras v4 → Sarvam 105B Conversations → Bulbul v4 Flash.
 - No real patient database, live calling, recording, SMS, WhatsApp, or automatic escalation. The urgent scenario uses a fixed safety message and never calls the model.
 - Docker packaging and a health endpoint for a later hosted demo. Production use still requires a deployment target, HTTPS, managed secrets, encrypted India-hosted storage, clinical approval, and configured Sarvam Voice Agents/telephony credentials.
 

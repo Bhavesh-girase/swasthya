@@ -20,7 +20,7 @@ python -m pip install -r requirements.txt
 python -m uvicorn swasthya.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Open <http://127.0.0.1:8000>. The Sarvam preview runs only when you choose a non-urgent synthetic case and click **Preview acknowledgement**. It sends no patient utterance or identifying information. Urgent examples use a fixed safety message and never call the model.
+Open <http://127.0.0.1:8000>. For the full showcase, click **Run voice demo**: Sarvam Bulbul generates a fictional Hindi caller utterance, Saaras transcribes the short 8 kHz audio, Sarvam 105B Conversations drafts a constrained acknowledgement, and Bulbul speaks the reply. This makes four Sarvam API requests using only the fixed synthetic scenario; it uses no microphone, phone number, or patient record. The smaller **Preview acknowledgement** also uses fixed synthetic text. Urgent examples use a fixed safety message and never call the model.
 
 The app reads `SARVAM_API_KEY` and dashboard settings from the process environment first, then from `.env`. The key is used only by the server and is never sent to the browser. `.env` is ignored by Git and excluded from the container.
 
